@@ -3,7 +3,6 @@ CREATE TABLE FoodItems (
     foodName VARCHAR(255),
     unitPrice FLOAT,
     foodQuantity FLOAT,
-    expirationDate DATE,
     storageType VARCHAR(255),
     
     PRIMARY KEY (foodID),
