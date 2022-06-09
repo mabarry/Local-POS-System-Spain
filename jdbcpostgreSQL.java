@@ -50,9 +50,8 @@ public class jdbcpostgreSQL {
        while ((line = csvReader.readLine()) != null) {
         batchCounter++;
         String[] currentLineBeingRead = line.split(delimiter);
-        String sqlStatement = "INSERT INTO foodtablenew (ID, comida, price, quantity, expiration, StorageType) VALUES(" + currentLineBeingRead[0] + ", '" + 
-                              currentLineBeingRead[1] + "', " + currentLineBeingRead[2] + ", " + currentLineBeingRead[3] + ", " + currentLineBeingRead[4] + 
-                              ", '" +currentLineBeingRead[5] + "');";
+        String sqlStatement = "INSERT INTO foodtablenew (foodID, foodName, unitPrice, foodQuantity, storageType) VALUES(" + currentLineBeingRead[0] + ", '" + 
+                              currentLineBeingRead[1] + "', " + currentLineBeingRead[2] + ", " + currentLineBeingRead[3] + ", " + currentLineBeingRead[4] + "');";
 
         stmt.addBatch(sqlStatement);
 
