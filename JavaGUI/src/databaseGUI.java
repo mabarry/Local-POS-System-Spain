@@ -14,7 +14,7 @@ public class databaseGUI {
         return createdButton;
     }
 
-    /* Streamlines the JTextField creation process into one line of code per textField. */
+     /* Streamlines the JTextField creation process into one line of code per textField. */
     public static JTextField CreateTextField(int x, int y, int width, int height) {
         JTextField createdTextField = new JTextField();
         createdTextField.setBounds(x, y, width, height);
@@ -23,18 +23,17 @@ public class databaseGUI {
 
     public static void SearchBar(JFrame frame) {
         // Initializing button
-        JButton button = CreateButton(1400,35,80,30, "Search");
+        JButton button = CreateButton(1380,35,80,30, "Search");
 
         // Text box that will appear when button is clicked
-        final JTextField textField = CreateTextField(720,40,660,20);
+        final JTextField textField = CreateTextField(700,40,660,20);
 
         // Output text field, determined by TextField input
-        final JTextField receipt = CreateTextField(705,85,780,500);
+        final JTextField output = ScreenSpace(frame);
 
         //Create a border
         Border blackline = BorderFactory.createLineBorder(Color.black);
         textField.setBorder(blackline);
-        receipt.setBorder(blackline);
 
         // Creates array to hold the search input
         final String[] searchInput = new String[1];
@@ -42,20 +41,21 @@ public class databaseGUI {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                searchInput[0] = textField.getText();
-            /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems
+            searchInput[0] = textField.getText();
+            /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems 
             in the database set the output as the database value. Have quantity, price per kg, and name, at least.
+
             String quantity = SELECT __ FROM ...
             String ID = SELECT ___ FROM ...
+
             may need multiple output textFields depending on the variables
             */
-                receipt.setText(searchInput[0]);
+            output.setText(searchInput[0]);
             }
         });
 
         // Adds elements to the JFrame
         frame.add(button);
-        frame.add(receipt);
         frame.add(textField);
 
     }
@@ -63,13 +63,13 @@ public class databaseGUI {
     public static void ReceiptBox(JFrame frame) {
         // Initializes the background panel
         JPanel backPanel = new JPanel();
-
+        
         //Create a border
         Border blackline = BorderFactory.createLineBorder(Color.black);
 
         // Adjusts backPanel properties
-        backPanel.setBounds(40,40,620,700);
-        backPanel.setBorder(blackline);
+        backPanel.setBounds(40,40,620,750);
+        backPanel.setBorder(blackline); 
         backPanel.setBackground(Color.white);
 
         // Adds elements to the JFrame
@@ -77,8 +77,18 @@ public class databaseGUI {
 
     }
 
-    public static void ScreenSpace(JFrame frame) {
+    public static JTextField ScreenSpace(JFrame frame) {
+        // Output text field, determined by TextField input
+        final JTextField output = CreateTextField(685,85,800,500);
 
+        //Create a border
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        output.setBorder(blackline);
+        
+        // Add elements to JFrame;
+        frame.add(output);
+
+        return output;
     }
 
     public static void main(String[] args) {
@@ -87,18 +97,19 @@ public class databaseGUI {
 
         SearchBar(frame);
         ReceiptBox(frame);
+        // ScreenSpace(frame);
 
-        // TODO: Populate JTable
-        JTable table = new JTable();
-        table.setBounds(30,40,200,200);
-        JScrollPane scrollPane = new JScrollPane(table);
-        frame.add(scrollPane);
+        // // TODO: Populate JTable
+        // JTable table = new JTable();
+        // table.setBounds(30,40,200,200);
+        // JScrollPane scrollPane = new JScrollPane(table);
+        // frame.add(scrollPane);
 
         // Adjust frame properties
         frame.setSize(1920,1080);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    }
+    
+     }
 }
