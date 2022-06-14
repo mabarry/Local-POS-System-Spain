@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -88,6 +89,7 @@ public class databaseGUI {
         backPanel.setBounds(40,40,620,700);
         backPanel.setBorder(blackLine);
         backPanel.setBackground(Color.white);
+        backPanel.setLayout(new FlowLayout());
         backPanel.add(new JScrollPane(table));
 
         // Adds elements to the JFrame
@@ -111,10 +113,16 @@ public class databaseGUI {
 
     public static JTable CreateTable(JFrame frame) {
         JTable table = new JTable(tableModel);
+        table.setBounds(100,40,200,200);
         tableModel.addColumn("ID");
         tableModel.addColumn("Item");
         tableModel.addColumn("Price");
         tableModel.addColumn("Quantity");
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(150);
+        columnModel.getColumn(2).setPreferredWidth(100);
+        columnModel.getColumn(3).setPreferredWidth(180);
         return table;
     }
 
