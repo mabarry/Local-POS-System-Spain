@@ -77,7 +77,7 @@ public class databaseGUI {
 
     }
 
-    public static void ReceiptBox(JFrame frame) {
+    public static void ReceiptBox(JFrame frame, JTable table) {
         // Initializes the background panel
         JPanel backPanel = new JPanel();
 
@@ -88,6 +88,7 @@ public class databaseGUI {
         backPanel.setBounds(40,40,620,700);
         backPanel.setBorder(blackLine);
         backPanel.setBackground(Color.white);
+        backPanel.add(new JScrollPane(table));
 
         // Adds elements to the JFrame
         frame.add(backPanel);
@@ -126,11 +127,10 @@ public class databaseGUI {
         // Initialize a new Swing window to appear when run
         JFrame frame = new JFrame("Fruit Stand Point of Sales");
 
-        SearchBar(frame);
-        ReceiptBox(frame);
-
         JTable table = CreateTable(frame);
-        frame.add(new JScrollPane(table));
+
+        SearchBar(frame);
+        ReceiptBox(frame, table);
 
         // Adjust frame properties
         frame.setSize(1920,1080);
