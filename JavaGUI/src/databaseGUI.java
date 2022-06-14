@@ -15,6 +15,8 @@ public class databaseGUI {
             return false;
         }
     };
+    public static DefaultTableModel inventoryTable = new DefaultTableModel();
+    public static DefaultTableModel employeeTable = new DefaultTableModel();
     public static JButton moveToSale;
     public static JTextField output;
     public static JTextField quantity;
@@ -196,7 +198,7 @@ public class databaseGUI {
         Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // Adjusts backPanel properties
-        cover.setBounds(545,90,945,600);
+        cover.setBounds(545,90,945,450);
         cover.setBorder(blackLine);
         cover.setBackground(Color.white);
 
@@ -207,6 +209,7 @@ public class databaseGUI {
                 frame.remove(output);
                 frame.remove(quantity);
                 frame.add(cover);
+                frame.repaint();
             }
         });
 
@@ -217,6 +220,7 @@ public class databaseGUI {
                 frame.add(output);
                 frame.add(quantity);
                 frame.remove(cover);
+                frame.repaint();
             }
         });
 
@@ -225,6 +229,8 @@ public class databaseGUI {
         frame.add(employeeView);
 
     }
+
+//    public static void setInventoryTable
 
     public static void main(String[] args) {
         // Initialize a new Swing window to appear when run
