@@ -37,7 +37,7 @@ public class databaseGUI {
              @Override
              public void actionPerformed(ActionEvent e) {
                  searchInput[0] = textField.getText();
-                 /* TODO: call database class' function to pull the value of searchInput[0] from fooditems in the database
+                 /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems in the database
                      set the output as the database value. Have quantity, price per kg, and name, at least.
 
                     String quantity = SELECT __ FROM ...
