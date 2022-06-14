@@ -26,15 +26,18 @@ public class databaseGUI {
         JButton button = CreateButton(1400,35,80,30, "Search");
 
         // Text box that will appear when button is clicked
-        final JTextField textField = CreateTextField(720,40,660,20);
+        final JTextField textField = CreateTextField(720,40,660,25);
+        Font font = new Font("SansSerif", Font.PLAIN, 15);
+        textField.setFont(font);
 
         // Output text field, determined by TextField input
-        final JTextField receipt = CreateTextField(705,85,780,500);
+        final JTextField output = ScreenSpace(frame);
+        Font outputFont = new Font("SansSerif", Font.PLAIN, 25);
+        output.setFont(outputFont);
 
         //Create a border
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        textField.setBorder(blackline);
-        receipt.setBorder(blackline);
+        Border blackLine = BorderFactory.createLineBorder(Color.black);
+        textField.setBorder(blackLine);
 
         // Creates array to hold the search input
         final String[] searchInput = new String[1];
@@ -49,13 +52,12 @@ public class databaseGUI {
             String ID = SELECT ___ FROM ...
             may need multiple output textFields depending on the variables
             */
-                receipt.setText(searchInput[0]);
+                output.setText(searchInput[0]);
             }
         });
 
         // Adds elements to the JFrame
         frame.add(button);
-        frame.add(receipt);
         frame.add(textField);
 
     }
@@ -65,11 +67,11 @@ public class databaseGUI {
         JPanel backPanel = new JPanel();
 
         //Create a border
-        Border blackline = BorderFactory.createLineBorder(Color.black);
+        Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // Adjusts backPanel properties
         backPanel.setBounds(40,40,620,700);
-        backPanel.setBorder(blackline);
+        backPanel.setBorder(blackLine);
         backPanel.setBackground(Color.white);
 
         // Adds elements to the JFrame
@@ -77,8 +79,18 @@ public class databaseGUI {
 
     }
 
-    public static void ScreenSpace(JFrame frame) {
+    public static JTextField ScreenSpace(JFrame frame) {
+        // Output text field, determined by TextField input
+        final JTextField output = CreateTextField(685,85,800,500);
 
+        //Create a border
+        Border blackLine = BorderFactory.createLineBorder(Color.black);
+        output.setBorder(blackLine);
+
+        // Add elements to JFrame;
+        frame.add(output);
+
+        return output;
     }
 
     public static void main(String[] args) {
