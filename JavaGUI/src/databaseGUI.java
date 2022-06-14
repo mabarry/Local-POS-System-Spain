@@ -58,6 +58,7 @@ public class databaseGUI {
         // Creates array to hold the search input
         final String[] searchInput = new String[1];
         final String[] searchOutput = new String[1];
+        final String[] quantityOutput = new String[1];
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -77,8 +78,9 @@ public class databaseGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchOutput[0] = output.getText();
+                quantityOutput[0] = quantity.getText();
                 // Change row to what the database fetched
-                String[] row = {"1","Apple","2.5","2.5"};
+                String[] row = {"1","Apple","2.5",quantityOutput[0]};
                 InsertIntoTable(frame, row);
             }
         });
@@ -95,11 +97,39 @@ public class databaseGUI {
         // Initializes the background panel
         JPanel backPanel = new JPanel();
 
-        final JTextField customerOrderTotal = CreateTextField(545,90,945,500);
+        final JTextField customerOrderTotal = CreateTextField(42,540,465, 30);
         customerOrderTotal.setEditable(false);
 
-        JButton completeOrder = CreateButton(42,580,465,30, "Complete Order");
+        JButton completeOrder = CreateButton(42,50,465,30, "Complete Order");
         JButton cancelOrder = CreateButton(42,620,465,30, "Cancel Order");
+
+        final JTextField rowToDelete = CreateTextField(42,660,465,30);
+
+        JButton cancelRow = CreateButton(42,700,465,30, "Cancel Line (Enter Line # Above)");
+
+        cancelOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableModel.setRowCount(0);
+            }
+        });
+
+        final String[] cancelledRow = new String[1];
+
+        cancelRow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cancelledRow[0] = rowToDelete.getText();
+                tableModel.removeRow(Integer.parseInt(cancelledRow[0]));
+            }
+        });
+
+        completeOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // all backend sshtuf
+            }
+        });
 
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
@@ -110,15 +140,21 @@ public class databaseGUI {
         backPanel.setBackground(Color.white);
         backPanel.add(new JScrollPane(table));
 
-        customerOrderTotal.setBounds(42,540,465,30);
+//        customerOrderTotal.setBounds(42,540,465,30);
         customerOrderTotal.setBackground(Color.white);
         customerOrderTotal.setBorder(blackLine);
+
+        rowToDelete.setBackground(Color.white);
+        rowToDelete.setBorder(blackLine);
+
 
         // Adds elements to the JFrame
         frame.add(completeOrder);
         frame.add(cancelOrder);
         frame.add(backPanel);
         frame.add(customerOrderTotal);
+        frame.add(rowToDelete);
+        frame.add(cancelRow);
 
     }
 
