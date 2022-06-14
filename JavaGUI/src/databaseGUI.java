@@ -9,7 +9,13 @@ import java.awt.event.ActionListener;
 // The main page for the POS System
 public class databaseGUI {
 
-    public static DefaultTableModel tableModel = new DefaultTableModel();
+    public static DefaultTableModel tableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
 
     /* Streamlines the JButton creation process into one line of code per textField. */
     public static JButton CreateButton(int x, int y, int width, int height, String message) {
@@ -27,8 +33,8 @@ public class databaseGUI {
 
     public static void SearchBar(JFrame frame) {
         // Initializing button
-        JButton button = CreateButton(1400,35,80,30, "Search");
-        JButton outputButton = CreateButton(685, 600, 140, 50, "Move to Sale");
+        JButton button = CreateButton(1400,35,80,40, "Search");
+        JButton outputButton = CreateButton(1022, 400, 465, 105, "Move to Sale");
 
         // Text box that will appear when button is clicked
         final JTextField textField = CreateTextField(720,40,660,25);
@@ -39,6 +45,11 @@ public class databaseGUI {
         final JTextField output = ScreenSpace(frame);
         Font outputFont = new Font("SansSerif", Font.PLAIN, 25);
         output.setFont(outputFont);
+        output.setEditable(false);
+
+        final JTextField quantity = CreateTextField(545,400,462,105);;
+        Font quantityFont = new Font("SansSerif", Font.PLAIN, 25);
+        quantity.setFont(outputFont);
 
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
@@ -66,6 +77,7 @@ public class databaseGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchOutput[0] = output.getText();
+                // Change row to what the database fetched
                 String[] row = {"1","Apple","2.5","2.5"};
                 InsertIntoTable(frame, row);
             }
@@ -75,6 +87,7 @@ public class databaseGUI {
         frame.add(button);
         frame.add(textField);
         frame.add(outputButton);
+        frame.add(quantity);
 
     }
 
@@ -82,24 +95,37 @@ public class databaseGUI {
         // Initializes the background panel
         JPanel backPanel = new JPanel();
 
+        final JTextField customerOrderTotal = CreateTextField(545,90,945,500);
+        customerOrderTotal.setEditable(false);
+
+        JButton completeOrder = CreateButton(42,580,465,30, "Complete Order");
+        JButton cancelOrder = CreateButton(42,620,465,30, "Cancel Order");
+
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // Adjusts backPanel properties
-        backPanel.setBounds(40,40,620,700);
+        backPanel.setBounds(40,90,468,440);
         backPanel.setBorder(blackLine);
         backPanel.setBackground(Color.white);
-        backPanel.setLayout(new FlowLayout());
         backPanel.add(new JScrollPane(table));
 
+        customerOrderTotal.setBounds(42,540,465,30);
+        customerOrderTotal.setBackground(Color.white);
+        customerOrderTotal.setBorder(blackLine);
+
         // Adds elements to the JFrame
+        frame.add(completeOrder);
+        frame.add(cancelOrder);
         frame.add(backPanel);
+        frame.add(customerOrderTotal);
+
     }
 
     public static JTextField ScreenSpace(JFrame frame) {
 
         // Output text field, determined by TextField input
-        final JTextField output = CreateTextField(685,85,800,500);
+        final JTextField output = CreateTextField(545,90,945,300);
 
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
