@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,11 +8,11 @@ import java.awt.event.ActionListener;
 public class databaseGUI {
 
     /* Streamlines the JButton creation process into one line of code per textField. */
-     public static JButton CreateButton(int x, int y, int width, int height, String message) {
-         JButton createdButton = new JButton(message);
-         createdButton.setBounds(x, y, width, height);
-         return createdButton;
-     }
+    public static JButton CreateButton(int x, int y, int width, int height, String message) {
+        JButton createdButton = new JButton(message);
+        createdButton.setBounds(x, y, width, height);
+        return createdButton;
+    }
 
      /* Streamlines the JTextField creation process into one line of code per textField. */
     public static JTextField CreateTextField(int x, int y, int width, int height) {
@@ -20,59 +21,86 @@ public class databaseGUI {
         return createdTextField;
     }
 
-     public static void main(String[] args) {
-         // Initialize a new Swing window to appear when run
-         JFrame frame = new JFrame();
+    public static void SearchBar(JFrame frame) {
+        // Initializing button
+        JButton button = CreateButton(1380,35,80,30, "Search");
 
-         // Adjust frame properties
-         frame.setSize(1920,1080);
-         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Text box that will appear when button is clicked
+        final JTextField textField = CreateTextField(700,40,660,20);
 
-         // add panel to frame
-         JPanel panel = new JPanel();
-         panel.setBounds(20,20,620,750);
-         panel.setBackground(Color.lightGray);
+        // Output text field, determined by TextField input
+        final JTextField receipt = CreateTextField(685,85,800,500);
 
-         // TODO: Populate JTable
-         JTable table = new JTable();
-         table.setBounds(30,40,200,200);
-         JScrollPane scrollPane = new JScrollPane(table);
-         frame.add(scrollPane);
+        //Create a border
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        textField.setBorder(blackline);
+        receipt.setBorder(blackline);
 
-         // Text box that will appear when button is clicked
-         final JTextField textField = CreateTextField(700,30,660,20);
-         final String[] searchInput = new String[1];
+        // Creates array to hold the search input
+        final String[] searchInput = new String[1];
 
-         // Initializing button
-         JButton button = CreateButton(1380,25,80,30, "Search");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            searchInput[0] = textField.getText();
+            /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems 
+            in the database set the output as the database value. Have quantity, price per kg, and name, at least.
 
-         // Output text field, determined by TextField input
-         final JTextField output = CreateTextField(685,85,800,500);
+            String quantity = SELECT __ FROM ...
+            String ID = SELECT ___ FROM ...
 
-         button.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 searchInput[0] = textField.getText();
-                 /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems in the database
-                     set the output as the database value. Have quantity, price per kg, and name, at least.
+            may need multiple output textFields depending on the variables
+            */
+            receipt.setText(searchInput[0]);
+            }
+        });
 
-                    String quantity = SELECT __ FROM ...
-                    String ID = SELECT ___ FROM ...
+        // Adds elements to the JFrame
+        frame.add(button);
+        frame.add(receipt);
+        frame.add(textField);
 
-                    may need multiple output textFields depending on the variables
-                 */
-                 output.setText(searchInput[0]);
-             }
-         });
+    }
 
-         // Add all created fields to be visible in the panel
-         frame.add(textField);
-         frame.add(button);
-         frame.add(output);
+    public static void ReceiptBox(JFrame frame) {
+        // Initializes the background panel
+        JPanel backPanel = new JPanel();
+        
+        //Create a border
+        Border blackline = BorderFactory.createLineBorder(Color.black);
 
-         // Add panel to the frame, make visible
-         frame.add(panel);
-         frame.setLayout(null);
-         frame.setVisible(true);
+        // Adjusts backPanel properties
+        backPanel.setBounds(40,40,620,750);
+        backPanel.setBorder(blackline); 
+        backPanel.setBackground(Color.white);
+
+        // Adds elements to the JFrame
+        frame.add(backPanel);
+
+    }
+
+    public static void ScreenSpace(JFrame frame) {
+
+    }
+
+    public static void main(String[] args) {
+        // Initialize a new Swing window to appear when run
+        JFrame frame = new JFrame("Fruit Stand Point of Sales (definitely not piece of shit)");
+
+        SearchBar(frame);
+        ReceiptBox(frame);
+
+        // TODO: Populate JTable
+        JTable table = new JTable();
+        table.setBounds(30,40,200,200);
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.add(scrollPane);
+
+        // Adjust frame properties
+        frame.setSize(1920,1080);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
      }
 }
