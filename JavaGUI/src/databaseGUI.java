@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,15 +24,30 @@ public class databaseGUI {
          // Initialize a new Swing window to appear when run
          JFrame frame = new JFrame();
 
+         // Adjust frame properties
+         frame.setSize(1920,1080);
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+         // add panel to frame
+         JPanel panel = new JPanel();
+         panel.setBounds(20,20,620,750);
+         panel.setBackground(Color.lightGray);
+
+         // TODO: Populate JTable
+         JTable table = new JTable();
+         table.setBounds(30,40,200,200);
+         JScrollPane scrollPane = new JScrollPane(table);
+         frame.add(scrollPane);
+
          // Text box that will appear when button is clicked
-         final JTextField textField = CreateTextField(400,30,660,20);
+         final JTextField textField = CreateTextField(700,30,660,20);
          final String[] searchInput = new String[1];
 
          // Initializing button
-         JButton button = CreateButton(1080,25,80,30, "Search");
+         JButton button = CreateButton(1380,25,80,30, "Search");
 
          // Output text field, determined by TextField input
-         final JTextField output = CreateTextField(1130,275,80,30);
+         final JTextField output = CreateTextField(685,85,800,500);
 
          button.addActionListener(new ActionListener() {
              @Override
@@ -49,15 +65,14 @@ public class databaseGUI {
              }
          });
 
-         // Add all created fields to be visible in the frame
+         // Add all created fields to be visible in the panel
+         frame.add(textField);
          frame.add(button);
          frame.add(output);
-         frame.add(textField);
 
-         // adjust frame properties
-         frame.setSize(1280,720);
+         // Add panel to the frame, make visible
+         frame.add(panel);
          frame.setLayout(null);
          frame.setVisible(true);
-         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
      }
 }
