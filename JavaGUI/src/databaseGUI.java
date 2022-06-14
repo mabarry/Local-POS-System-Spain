@@ -173,8 +173,8 @@ public class databaseGUI {
         table.setBounds(100,40,200,200);
         tableModel.addColumn("ID");
         tableModel.addColumn("Item");
-        tableModel.addColumn("Price");
-        tableModel.addColumn("Quantity");
+        tableModel.addColumn("Unit Price");
+        tableModel.addColumn("Amnt in Inventory");
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(150);
@@ -188,7 +188,7 @@ public class databaseGUI {
         tableModel.insertRow(tableModel.getRowCount(), row);
     }
 
-    public static void ScreenSwitcher(JFrame frame) {
+    public static void ScreenSwitcher(JFrame frame, JTable inventory) {
         // creates button to change views
         JButton managerView = CreateButton(545,550, 465, 105, "Switch to Manager View");
         JButton employeeView = CreateButton(1022, 550, 465, 105, "Switch to Employee View");
@@ -201,6 +201,8 @@ public class databaseGUI {
         cover.setBounds(545,90,945,450);
         cover.setBorder(blackLine);
         cover.setBackground(Color.white);
+        cover.add(new JScrollPane(inventory));
+        cover.repaint();
 
         managerView.addActionListener(new ActionListener() {
             @Override
@@ -230,12 +232,26 @@ public class databaseGUI {
 
     }
 
-//    public static void setInventoryTable
+    public static JTable InventoryTable(JFrame frame) {
+        JTable inventory = new JTable(inventoryTable);
+        inventory.setBounds(100,40,200,200);
+        inventoryTable.addColumn("ID");
+        inventoryTable.addColumn("Item");
+        inventoryTable.addColumn("Price");
+        inventoryTable.addColumn("Quantity");
+        TableColumnModel columnModel = inventory.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(150);
+        columnModel.getColumn(2).setPreferredWidth(100);
+        columnModel.getColumn(3).setPreferredWidth(180);
+        return inventory;
+    }
 
     public static void main(String[] args) {
         // Initialize a new Swing window to appear when run
         JFrame frame = new JFrame("Fruit Stand Point of Sales");
         JTable table = CreateTable(frame);
+        JTable inventory = InventoryTable(frame);
         moveToSale = CreateButton(1022, 400, 465, 105, "Move to Sale");
         output = ScreenSpace(frame);
         quantity = CreateTextField(545,400,462,105, "Enter Qty. of Item");
@@ -247,7 +263,7 @@ public class databaseGUI {
 
         SearchBar(frame);
         ReceiptBox(frame, table);
-        ScreenSwitcher(frame);
+        ScreenSwitcher(frame, inventory);
 
         // Adjust frame properties
         frame.setSize(1920,1080);
