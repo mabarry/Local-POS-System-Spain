@@ -24,11 +24,11 @@ public class databaseGUI {
          JFrame frame = new JFrame();
 
          // Text box that will appear when button is clicked
-         final JTextField textField = CreateTextField(450,75,660,20);
+         final JTextField textField = CreateTextField(400,30,660,20);
          final String[] searchInput = new String[1];
 
          // Initializing button
-         JButton button = CreateButton(1130,70,80,30, "Search");
+         JButton button = CreateButton(1080,25,80,30, "Search");
 
          // Output text field, determined by TextField input
          final JTextField output = CreateTextField(1130,275,80,30);
