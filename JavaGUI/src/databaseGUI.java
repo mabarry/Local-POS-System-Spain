@@ -1,11 +1,14 @@
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 // The main page for the POS System
 public class databaseGUI {
+
+    public static DefaultTableModel tableModel = new DefaultTableModel();
 
     /* Streamlines the JButton creation process into one line of code per textField. */
     public static JButton CreateButton(int x, int y, int width, int height, String message) {
@@ -24,6 +27,7 @@ public class databaseGUI {
     public static void SearchBar(JFrame frame) {
         // Initializing button
         JButton button = CreateButton(1400,35,80,30, "Search");
+        JButton outputButton = CreateButton(685, 600, 140, 50, "Move to Sale");
 
         // Text box that will appear when button is clicked
         final JTextField textField = CreateTextField(720,40,660,25);
@@ -41,6 +45,7 @@ public class databaseGUI {
 
         // Creates array to hold the search input
         final String[] searchInput = new String[1];
+        final String[] searchOutput = new String[1];
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -56,9 +61,19 @@ public class databaseGUI {
             }
         });
 
+        outputButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchOutput[0] = output.getText();
+                String[] row = {"1","Apple","2.5","2.5"};
+                InsertIntoTable(frame, row);
+            }
+        });
+
         // Adds elements to the JFrame
         frame.add(button);
         frame.add(textField);
+        frame.add(outputButton);
 
     }
 
@@ -76,10 +91,10 @@ public class databaseGUI {
 
         // Adds elements to the JFrame
         frame.add(backPanel);
-
     }
 
     public static JTextField ScreenSpace(JFrame frame) {
+
         // Output text field, determined by TextField input
         final JTextField output = CreateTextField(685,85,800,500);
 
@@ -93,18 +108,29 @@ public class databaseGUI {
         return output;
     }
 
+    public static JTable CreateTable(JFrame frame) {
+        JTable table = new JTable(tableModel);
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Item");
+        tableModel.addColumn("Price");
+        tableModel.addColumn("Quantity");
+        return table;
+    }
+
+    public static void InsertIntoTable(JFrame frame, String[] row) {
+        // TODO: Populate JTable
+        tableModel.insertRow(tableModel.getRowCount(), row);
+    }
+
     public static void main(String[] args) {
         // Initialize a new Swing window to appear when run
-        JFrame frame = new JFrame("Fruit Stand Point of Sales (definitely not piece of shit)");
+        JFrame frame = new JFrame("Fruit Stand Point of Sales");
 
         SearchBar(frame);
         ReceiptBox(frame);
 
-        // TODO: Populate JTable
-        JTable table = new JTable();
-        table.setBounds(30,40,200,200);
-        JScrollPane scrollPane = new JScrollPane(table);
-        frame.add(scrollPane);
+        JTable table = CreateTable(frame);
+        frame.add(new JScrollPane(table));
 
         // Adjust frame properties
         frame.setSize(1920,1080);
