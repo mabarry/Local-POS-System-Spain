@@ -24,8 +24,9 @@ public class databaseGUI {
     };
     public static DefaultTableModel inventoryTable = new DefaultTableModel();
     public static DefaultTableModel employeeTable = new DefaultTableModel();
+    public static DefaultTableModel itemList = new DefaultTableModel();
     public static JButton moveToSale;
-    public static JTextField output;
+    public static JTextArea output;
     public static JTextField quantity;
 
     /**
@@ -58,6 +59,12 @@ public class databaseGUI {
         return createdTextField;
     }
 
+    public static JTextArea CreateTextArea(int x, int y, int width, int height, String text) {
+        JTextArea createdTextArea = new JTextArea(text);
+        createdTextArea.setBounds(x, y, width, height);
+        return createdTextArea;
+    }
+
     /**
      * A search bar that creates a button and text space for the user to look up different food items
      * to be added to a sale line in an order. This method also adds button funcitonality for different
@@ -78,7 +85,6 @@ public class databaseGUI {
         output.setFont(outputFont);
         output.setEditable(false);
 
-//        final JTextField quantity = CreateTextField(545,400,462,105, "Enter Qty. of Item");
         Font quantityFont = new Font("SansSerif", Font.PLAIN, 25);
         quantity.setFont(outputFont);
 
@@ -101,7 +107,7 @@ public class databaseGUI {
                 String ID = SELECT ___ FROM ...
                 may need multiple output textFields depending on the variables
                 */
-                output.setText("  " + searchInput[0] + " Info ($$$, Qty. in Inventory)");
+                output.setText("\n" + "\n" + "\n" + "\n" + "\n" + searchInput[0] + " Info " + "\n" + "($$$, Qty. in Inventory)");
             }
         });
 
@@ -119,7 +125,6 @@ public class databaseGUI {
         // Adds elements to the JFrame
         frame.add(searchButton);
         frame.add(searchBar);
-//        frame.remove();
     }
 
     /**
@@ -195,13 +200,18 @@ public class databaseGUI {
      * @param  frame               The frame that holds the entire GUI
      * @return       The text field that stores the output of the search bar
      */
-    public static JTextField ScreenSpace(JFrame frame) {
+    public static JTextArea ScreenSpace(JFrame frame) {
         // Output text field, determined by TextField input
-        final JTextField output = CreateTextField(545,90,945,300, "");
+        final JTextArea output = CreateTextArea(545,90,465,440, "");
 
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
+
+        // Adjust 'output' properties
         output.setBorder(blackLine);
+        output.setBackground(Color.white);
+        output.setLineWrap(true);
+        output.setWrapStyleWord(true);
 
         return output;
     }
@@ -244,15 +254,17 @@ public class databaseGUI {
      * @param inventory  The table that holds information on the current stock or inventory.
      * @param employees  The table that holds the information on current employees
      */
-    public static void ScreenSwitcher(JFrame frame, JTable inventory, JTable employees) {
+    public static void ScreenSwitcher(JFrame frame, JTable inventory, JTable employees, JTable items) {
         // Create different views and the buttons to switch those views
-        JButton managerView = CreateButton(545,550, 465, 105, "Switch to Manager View");
-        JButton employeeView = CreateButton(1022, 550, 465, 105, "Switch to Employee View (Sales)");
-        JButton updateItems = CreateButton(545, 660, 465, 105, "Update All");
-        JButton addEmployee = CreateButton(1022, 660, 232, 105, "Add Employee");
-        JButton deleteEmployee = CreateButton(1256, 660, 232, 105, "Delete Employee");
+        JButton managerView = CreateButton(545, 660, 465, 105, "Switch to Manager View");
+
+        JButton employeeView = CreateButton(1022, 660, 465, 105, "Switch to Employee View (Sales)");
+        JButton updateItems = CreateButton(545,550, 465, 105, "Update All");
+        JButton addEmployee = CreateButton(1022, 550, 232, 105, "Add Employee");
+        JButton deleteEmployee = CreateButton(1256, 550, 232, 105, "Delete Employee");
         JPanel coverInventory = new JPanel();
         JPanel coverEmployee = new JPanel();
+        JPanel coverItems = new JPanel();
 
         // Black border to be used by both screen panels
         Border blackLine = BorderFactory.createLineBorder(Color.black);
@@ -269,6 +281,14 @@ public class databaseGUI {
         coverEmployee.setBackground(Color.white);
         coverEmployee.add(new JScrollPane(employees));
 
+        // GUI field to store item names and IDs
+        coverItems.setBounds(1022,90,472,440);
+        coverItems.setBorder(blackLine);
+        coverItems.setBackground(Color.white);
+        coverItems.add(new JScrollPane(items));
+
+        frame.add(coverItems);
+
         /* When manager view is pressed, new tables will appear that the manager is able to edit and view */
         managerView.addActionListener(new ActionListener() {
             @Override
@@ -276,6 +296,7 @@ public class databaseGUI {
                 frame.remove(moveToSale);
                 frame.remove(output);
                 frame.remove(quantity);
+                frame.remove(coverItems);
                 frame.add(updateItems);
                 frame.add(addEmployee);
                 frame.add(deleteEmployee);
@@ -294,6 +315,7 @@ public class databaseGUI {
                 frame.add(moveToSale);
                 frame.add(output);
                 frame.add(quantity);
+                frame.add(coverItems);
                 frame.remove(updateItems);
                 frame.remove(coverInventory);
                 frame.remove(coverEmployee);
@@ -378,6 +400,19 @@ public class databaseGUI {
         return employees;
     }
 
+    public static JTable ItemList(JFrame frame) {
+        JTable items = new JTable(itemList);
+        items.setBounds(1022,90,472,300);
+        itemList.addColumn("Item ID");
+        itemList.addColumn("Item Name");
+        itemList.addColumn("In Stock");
+        TableColumnModel columnModel = items.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(100);
+        columnModel.getColumn(1).setPreferredWidth(200);
+        columnModel.getColumn(2).setPreferredWidth(100);
+        return items;
+    }
+
     /**
      * The section of the program that calls the methods to create a GUI. Global
      * variables are instantiated here and the JFrame properties are set here.
@@ -391,23 +426,25 @@ public class databaseGUI {
         JTable table = CreateTable(frame);
         JTable inventory = InventoryTable(frame);
         JTable employees = EmployeeTable(frame);
+        JTable items = ItemList(frame);
 
         // Global buttons and boxes initialized
-        moveToSale = CreateButton(1022, 400, 465, 105, "Move to Sale");
+        moveToSale = CreateButton(1022, 540, 465, 105, "Move to Sale");
         output = ScreenSpace(frame);
-        quantity = CreateTextField(545,400,462,105, "Enter Qty. of Item");
+        quantity = CreateTextField(545,540, 465, 105, "Enter Qty. of Item");
 
         // Add global buttons and boxes to sale to be used in all functions
         frame.add(moveToSale);
         frame.add(quantity);
         frame.add(output);
+        frame.add(items);
 
         // TODO: call create customer order
 
         // Initialize the search bar, sales box, and system to switch between management and employee views
         SearchBar(frame);
         ReceiptBox(frame, table);
-        ScreenSwitcher(frame, inventory, employees);
+        ScreenSwitcher(frame, inventory, employees, items);
 
         // Adjust frame properties
         frame.setSize(1920,1080);
