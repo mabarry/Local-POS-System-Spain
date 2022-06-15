@@ -66,10 +66,10 @@ public class databaseGUI {
      */
     public static void SearchBar(JFrame frame) {
         // Initializing button
-        JButton searchButton = CreateButton(1400,35,80,40, "Search");
+        JButton searchButton = CreateButton(1380,35,80,40, "Search");
 
         // Text box that will appear when button is clicked
-        final JTextField searchBar = CreateTextField(720,40,660,25, "Search for an ID");
+        final JTextField searchBar = CreateTextField(570,40,790,25, "Search for an ID");
         Font font = new Font("SansSerif", Font.PLAIN, 15);
         searchBar.setFont(font);
 
@@ -101,7 +101,7 @@ public class databaseGUI {
                 String ID = SELECT ___ FROM ...
                 may need multiple output textFields depending on the variables
                 */
-                output.setText(searchInput[0]);
+                output.setText("  " + searchInput[0] + " Info ($$$, Qty. in Inventory)");
             }
         });
 
@@ -219,10 +219,10 @@ public class databaseGUI {
         tableModel.addColumn("Unit Price");
         tableModel.addColumn("Amnt in Inventory");
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(50);
-        columnModel.getColumn(1).setPreferredWidth(150);
-        columnModel.getColumn(2).setPreferredWidth(100);
-        columnModel.getColumn(3).setPreferredWidth(180);
+        columnModel.getColumn(0).setPreferredWidth(15);
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(2).setPreferredWidth(50);
+        columnModel.getColumn(3).setPreferredWidth(60);
         return table;
     }
 
@@ -248,11 +248,13 @@ public class databaseGUI {
         // Create different views and the buttons to switch those views
         JButton managerView = CreateButton(545,550, 465, 105, "Switch to Manager View");
         JButton employeeView = CreateButton(1022, 550, 465, 105, "Switch to Employee View (Sales)");
-        JButton updateItems = CreateButton(545, 660, 465, 105, "Update Inventory Item(s)");
+        JButton updateItems = CreateButton(545, 660, 465, 105, "Update All");
+        JButton addEmployee = CreateButton(1022, 660, 232, 105, "Add Employee");
+        JButton deleteEmployee = CreateButton(1256, 660, 232, 105, "Delete Employee");
         JPanel coverInventory = new JPanel();
         JPanel coverEmployee = new JPanel();
 
-        // Black border to be used by both screen banels
+        // Black border to be used by both screen panels
         Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // GUI field to store inventory information
@@ -275,6 +277,8 @@ public class databaseGUI {
                 frame.remove(output);
                 frame.remove(quantity);
                 frame.add(updateItems);
+                frame.add(addEmployee);
+                frame.add(deleteEmployee);
                 frame.add(coverInventory);
                 frame.add(coverEmployee);
                 frame.repaint();
@@ -293,6 +297,8 @@ public class databaseGUI {
                 frame.remove(updateItems);
                 frame.remove(coverInventory);
                 frame.remove(coverEmployee);
+                frame.remove(addEmployee);
+                frame.remove(deleteEmployee);
                 frame.repaint();
             }
         });
@@ -303,6 +309,26 @@ public class databaseGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: Update food items
+                // loop getValueAt(row, col) until whole list is updated
+            }
+        });
+
+        addEmployee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Add employee to database
+                String[] rowToInsert = {"Other Matthew", "5", "yes"};
+                InsertIntoTable(frame, rowToInsert, employeeTable);
+                // loop getValueAt(row, col) until whole list is updated
+            }
+        });
+
+        deleteEmployee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Remove employee from database
+                // removes row that the user selects with the mouse
+                employeeTable.removeRow(employees.getSelectedRow());
                 // loop getValueAt(row, col) until whole list is updated
             }
         });
