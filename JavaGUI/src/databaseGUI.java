@@ -6,7 +6,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-// The main page for the POS System
+/**
+ * @author Matthew Barry
+ * @author Cameron Hoholik-Carlson
+ * @author Harrison Kuhn
+ * @author Kyle Owens
+ * This is the main class that holds the code for the GUI and POS system
+ */
+
 public class databaseGUI {
 
     public static DefaultTableModel tableModel = new DefaultTableModel() {
@@ -21,21 +28,42 @@ public class databaseGUI {
     public static JTextField output;
     public static JTextField quantity;
 
-
-    /* Streamlines the JButton creation process into one line of code per textField. */
+    /**
+     * Streamlines the JButton creation process into one line of code per textField.
+     * @param  x                     The X coordinate of the new button on the JFrame.
+     * @param  y                     The Y coordinate of the new button on the JFrame.
+     * @param  width                 The total width of the new button being created.
+     * @param  height                The total height of the new button being created.
+     * @param  message               The text that fills the space inside of the button.
+     * @return                       The button object being created.
+     */
     public static JButton CreateButton(int x, int y, int width, int height, String message) {
         JButton createdButton = new JButton(message);
         createdButton.setBounds(x, y, width, height);
         return createdButton;
     }
 
-    /* Streamlines the JTextField creation process into one line of code per textField. */
+    /**
+     * Streamlines JTextField creation process by setting the size and text of the field.
+     * @param  x                    The X coordinate of the new button on the JFrame.
+     * @param  y                    The Y coordinate of the new button on the JFrame.
+     * @param  width                The total width of the new button being created.
+     * @param  height               The total height of the new button being created.
+     * @param  text                 The text that fills the space inside of the text field.
+     * @return                      The text field being created
+     */
     public static JTextField CreateTextField(int x, int y, int width, int height, String text) {
         JTextField createdTextField = new JTextField(text);
         createdTextField.setBounds(x, y, width, height);
         return createdTextField;
     }
 
+    /**
+     * A search bar that creates a button and text space for the user to look up different food items
+     * to be added to a sale line in an order. This method also adds button funcitonality for different
+     * objects in the employee view.
+     * @param frame  The JFrame that holds the entire GUI
+     */
     public static void SearchBar(JFrame frame) {
         // Initializing button
         JButton searchButton = CreateButton(1400,35,80,40, "Search");
@@ -94,6 +122,11 @@ public class databaseGUI {
 //        frame.remove();
     }
 
+    /**
+     * A method that creates an area to handle orders and its corresponding buttons
+     * @param frame  The JFrame that holds the entire GUI
+     * @param table  The table that holds sale lines and order information to be editted
+     */
     public static void ReceiptBox(JFrame frame, JTable table) {
         // Initializes the background panel and buttons
         JPanel backPanel = new JPanel();
@@ -113,6 +146,7 @@ public class databaseGUI {
             }
         });
 
+        // A string array to hold data on a row to be deleted.
         final String[] cancelledRow = new String[1];
 
         cancelRow.addActionListener(new ActionListener() {
@@ -139,12 +173,13 @@ public class databaseGUI {
         backPanel.setBackground(Color.white);
         backPanel.add(new JScrollPane(table));
 
+        // Adjusts customerOrderTotal properties
         customerOrderTotal.setBackground(Color.white);
         customerOrderTotal.setBorder(blackLine);
 
+        // Adjusts rowToDelete properties
         rowToDelete.setBackground(Color.white);
         rowToDelete.setBorder(blackLine);
-
 
         // Adds elements to the JFrame
         frame.add(completeOrder);
@@ -155,7 +190,11 @@ public class databaseGUI {
         frame.add(cancelRow);
     }
 
-    /* Default sale view of items searched and returned from the database */
+    /**
+     * Default sale view of items searched and returned from the database
+     * @param  frame               The frame that holds the entire GUI
+     * @return       The text field that stores the output of the search bar
+     */
     public static JTextField ScreenSpace(JFrame frame) {
         // Output text field, determined by TextField input
         final JTextField output = CreateTextField(545,90,945,300, "");
@@ -167,7 +206,11 @@ public class databaseGUI {
         return output;
     }
 
-    /* Creates the sale table to be used during checkout */
+    /**
+     * Creates the sale table to be used during checkout
+     * @param  frame               The fram that holds the entire GUI
+     * @return       JTable that is created with the given fields/columns.
+     */
     public static JTable CreateTable(JFrame frame) {
         JTable table = new JTable(tableModel);
         table.setBounds(100,40,200,200);
@@ -183,12 +226,24 @@ public class databaseGUI {
         return table;
     }
 
-    /* Streamlines insertion process of data into DefaultTableModels to one line of code */
+    /**
+     * Streamlines insertion process of data into DefaultTableModels to one line of code
+     * @param frame  the JFrame that holds the entire GUI
+     * @param row    The row data to insert into the table
+     * @param DFT    The DefaultTableModel into which we will insert the row data
+     */
     public static void InsertIntoTable(JFrame frame, String[] row, DefaultTableModel DFT) {
         // TODO: Populate JTable
         DFT.insertRow(DFT.getRowCount(), row);
     }
 
+    /**
+     * A method that adds buttons that allow the functionality of switching between an
+     * employee and manager view. This method also includes the button actions for each view
+     * @param frame      The JFrame that holds the entire GUI.
+     * @param inventory  The table that holds information on the current stock or inventory.
+     * @param employees  The table that holds the information on current employees
+     */
     public static void ScreenSwitcher(JFrame frame, JTable inventory, JTable employees) {
         // Create different views and the buttons to switch those views
         JButton managerView = CreateButton(545,550, 465, 105, "Switch to Manager View");
@@ -228,7 +283,7 @@ public class databaseGUI {
         });
 
         /* When employee view is pressed, all the managerial aspects and views of the GUI are hidden and rendered
-        *  usable, effectively switching the user's permissions */
+         *  usable, effectively switching the user's permissions */
         employeeView.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -243,7 +298,7 @@ public class databaseGUI {
         });
 
         /* When updateItems is pressed, the inventory in our database will be updated to hold the new values
-        *  input by the manager */
+         *  input by the manager */
         updateItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -257,7 +312,11 @@ public class databaseGUI {
         frame.add(employeeView);
     }
 
-    /* Create table to store food and item data from inventory that managers can view and edit */
+    /**
+     * Create table to store food and item data from inventory that managers can view and edit.
+     * @param  frame               The frame that holds the entire GUI
+     * @return       The JTable storing the information for the food items in the database inventory
+     */
     public static JTable InventoryTable(JFrame frame) {
         JTable inventory = new JTable(inventoryTable);
         inventory.setBounds(10,10,200,200);
@@ -275,7 +334,11 @@ public class databaseGUI {
         return inventory;
     }
 
-    /* Create table to store employee data that managers can view */
+    /**
+     * Create table to store employee data that managers can view
+     * @param  frame               The frame that holds the entire GUI
+     * @return       The JTable that stores employee info
+     */
     public static JTable EmployeeTable(JFrame frame) {
         JTable employees = new JTable(employeeTable);
         employees.setBounds(10,10,200,200);
@@ -289,6 +352,11 @@ public class databaseGUI {
         return employees;
     }
 
+    /**
+     * The section of the program that calls the methods to create a GUI. Global
+     * variables are instantiated here and the JFrame properties are set here.
+     * @param args  [description]
+     */
     public static void main(String[] args) {
         // Initialize a new Swing window to appear when run
         JFrame frame = new JFrame("Fruit Stand Point of Sales");
