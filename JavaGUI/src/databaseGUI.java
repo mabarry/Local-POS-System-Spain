@@ -28,6 +28,7 @@ public class databaseGUI {
     public static JButton moveToSale;
     public static JTextArea output;
     public static JTextField quantity;
+    public static final JTextField customerOrderTotal = CreateTextField(42,540,465, 30, "Total");
 
     /**
      * Streamlines the JButton creation process into one line of code per textField.
@@ -97,17 +98,38 @@ public class databaseGUI {
         final String[] searchOutput = new String[1];
         final String[] quantityInput = new String[1];
 
+        final String[] itemReturned = new String[6];
+        final String[] quantityType = new String[1];
+        final String[] priceType = new String[1];
+
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 searchInput[0] = searchBar.getText();
+
                 /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems
                 in the database set the output as the database value. Have quantity, price per kg, and name, at least.
                 String quantity = SELECT __ FROM ...
                 String ID = SELECT ___ FROM ...
                 may need multiple output textFields depending on the variables
                 */
-                output.setText("\n" + "\n" + "\n" + "\n" + "\n" + searchInput[0] + " Info " + "\n" + "($$$, Qty. in Inventory)");
+                String[] searchResult = Interact.itemSearchDisplay(searchInput[0]);
+                for (int i = 0; i < searchResult.length; i++) {
+                    itemReturned[i] = searchResult[i];
+                }
+
+                if (itemReturned[5].equals("f")) {
+                    quantityType[0] = "kg";
+                    priceType[0] = "/kg";
+                }
+                else {
+                    quantityType[0] = "units";
+                    priceType[0] = "/unit";
+                }
+
+                output.setText("\n" + "\n" + "\n" + "\n" + "\n" + itemReturned[1] +  " " + "\n" + "(" + itemReturned[2] + priceType[0] + ", " + 
+                itemReturned[3] + " " + quantityType[0] + " in Inventory)");
             }
         });
 
@@ -116,9 +138,12 @@ public class databaseGUI {
             public void actionPerformed(ActionEvent e) {
                 searchOutput[0] = output.getText();
                 quantityInput[0] = quantity.getText();
+
                 // Change row to what the database fetched
-                String[] row = {"n",searchInput[0],"$$$$",quantityInput[0]};
+                String[] row = {itemReturned[0], itemReturned[1], itemReturned[2], quantityInput[0]};
                 InsertIntoTable(frame, row, tableModel);
+                Interact.addToSaleLine(itemReturned[0], quantityInput[0]);
+                customerOrderTotal.setText(" " + Interact.getCustomerOrderTotal());
             }
         });
 
@@ -141,7 +166,6 @@ public class databaseGUI {
 
         // Initializes text fields
         final JTextField rowToDelete = CreateTextField(42,660,465,30, "Enter ID of Row to Delete");
-        final JTextField customerOrderTotal = CreateTextField(42,540,465, 30, "Total");
         customerOrderTotal.setEditable(false);
 
         cancelOrder.addActionListener(new ActionListener() {
@@ -227,7 +251,7 @@ public class databaseGUI {
         tableModel.addColumn("ID");
         tableModel.addColumn("Item");
         tableModel.addColumn("Unit Price");
-        tableModel.addColumn("Amnt in Inventory");
+        tableModel.addColumn("Quantity Selected");
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(15);
         columnModel.getColumn(1).setPreferredWidth(100);
@@ -419,6 +443,9 @@ public class databaseGUI {
      * @param args  [description]
      */
     public static void main(String[] args) {
+        // Initialize the connection to the SQL database
+        Interact.initializer("101");
+
         // Initialize a new Swing window to appear when run
         JFrame frame = new JFrame("Fruit Stand Point of Sales");
 
@@ -438,8 +465,6 @@ public class databaseGUI {
         frame.add(quantity);
         frame.add(output);
         frame.add(items);
-
-        // TODO: call create customer order
 
         // Initialize the search bar, sales box, and system to switch between management and employee views
         SearchBar(frame);
