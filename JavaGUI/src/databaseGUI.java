@@ -84,7 +84,7 @@ public class databaseGUI {
                 quantityInput[0] = quantity.getText();
                 // Change row to what the database fetched
                 String[] row = {"n",searchInput[0],"$$$$",quantityInput[0]};
-                InsertIntoTable(frame, row);
+                InsertIntoTable(frame, row, tableModel);
             }
         });
 
@@ -139,7 +139,6 @@ public class databaseGUI {
         backPanel.setBackground(Color.white);
         backPanel.add(new JScrollPane(table));
 
-//        customerOrderTotal.setBounds(42,540,465,30);
         customerOrderTotal.setBackground(Color.white);
         customerOrderTotal.setBorder(blackLine);
 
@@ -183,26 +182,32 @@ public class databaseGUI {
         return table;
     }
 
-    public static void InsertIntoTable(JFrame frame, String[] row) {
+    public static void InsertIntoTable(JFrame frame, String[] row, DefaultTableModel DFT) {
         // TODO: Populate JTable
-        tableModel.insertRow(tableModel.getRowCount(), row);
+        DFT.insertRow(DFT.getRowCount(), row);
     }
 
-    public static void ScreenSwitcher(JFrame frame, JTable inventory) {
+    public static void ScreenSwitcher(JFrame frame, JTable inventory, JTable employees) {
         // creates button to change views
         JButton managerView = CreateButton(545,550, 465, 105, "Switch to Manager View");
-        JButton employeeView = CreateButton(1022, 550, 465, 105, "Switch to Employee View");
+        JButton employeeView = CreateButton(1022, 550, 465, 105, "Switch to Employee View (Sales)");
+        JButton updateItems = CreateButton(545, 660, 465, 105, "Update Inventory Item(s)");
         JPanel cover = new JPanel();
+        JPanel coverEmployee = new JPanel();
 
         //Create a border
         Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // Adjusts backPanel properties
-        cover.setBounds(545,90,945,450);
+        cover.setBounds(545,90,472,450);
         cover.setBorder(blackLine);
         cover.setBackground(Color.white);
         cover.add(new JScrollPane(inventory));
-        cover.repaint();
+
+        coverEmployee.setBounds(1022,90,472,450);
+        coverEmployee.setBorder(blackLine);
+        coverEmployee.setBackground(Color.white);
+        coverEmployee.add(new JScrollPane(employees));
 
         managerView.addActionListener(new ActionListener() {
             @Override
@@ -210,8 +215,11 @@ public class databaseGUI {
                 frame.remove(moveToSale);
                 frame.remove(output);
                 frame.remove(quantity);
+                frame.add(updateItems);
                 frame.add(cover);
+                frame.add(coverEmployee);
                 frame.repaint();
+                frame.revalidate();
             }
         });
 
@@ -221,8 +229,18 @@ public class databaseGUI {
                 frame.add(moveToSale);
                 frame.add(output);
                 frame.add(quantity);
+                frame.remove(updateItems);
                 frame.remove(cover);
+                frame.remove(coverEmployee);
                 frame.repaint();
+            }
+        });
+
+        updateItems.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Update food items
+                // loop getValueAt(row, col) until whole list is updated
             }
         });
 
@@ -234,17 +252,32 @@ public class databaseGUI {
 
     public static JTable InventoryTable(JFrame frame) {
         JTable inventory = new JTable(inventoryTable);
-        inventory.setBounds(100,40,200,200);
+        inventory.setBounds(10,10,200,200);
         inventoryTable.addColumn("ID");
-        inventoryTable.addColumn("Item");
-        inventoryTable.addColumn("Price");
-        inventoryTable.addColumn("Quantity");
+        inventoryTable.addColumn("Edit Item");
+        inventoryTable.addColumn("Edit Unit Price");
+        inventoryTable.addColumn("Edit Amnt in Stock");
         TableColumnModel columnModel = inventory.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(150);
         columnModel.getColumn(2).setPreferredWidth(100);
         columnModel.getColumn(3).setPreferredWidth(180);
+        String[] row = {"n", "example item" ,"$$$$", "example quantity"}; // EXAMPLE //
+        InsertIntoTable(frame, row, inventoryTable);
         return inventory;
+    }
+
+    public static JTable EmployeeTable(JFrame frame) {
+        JTable employees = new JTable(employeeTable);
+        employees.setBounds(10,10,200,200);
+        employeeTable.addColumn("Employee Name");
+        employeeTable.addColumn("Employee ID");
+        employeeTable.addColumn("Manager Permissions?");
+        TableColumnModel columnModel = employees.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(100);
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(2).setPreferredWidth(200);
+        return employees;
     }
 
     public static void main(String[] args) {
@@ -252,6 +285,7 @@ public class databaseGUI {
         JFrame frame = new JFrame("Fruit Stand Point of Sales");
         JTable table = CreateTable(frame);
         JTable inventory = InventoryTable(frame);
+        JTable employees = EmployeeTable(frame);
         moveToSale = CreateButton(1022, 400, 465, 105, "Move to Sale");
         output = ScreenSpace(frame);
         quantity = CreateTextField(545,400,462,105, "Enter Qty. of Item");
@@ -263,7 +297,7 @@ public class databaseGUI {
 
         SearchBar(frame);
         ReceiptBox(frame, table);
-        ScreenSwitcher(frame, inventory);
+        ScreenSwitcher(frame, inventory, employees);
 
         // Adjust frame properties
         frame.setSize(1920,1080);
