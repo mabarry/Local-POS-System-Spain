@@ -78,7 +78,7 @@ public class databaseGUI {
         JButton searchButton = CreateButton(1380,35,80,40, "Search");
 
         // Text box that will appear when button is clicked
-        final JTextField searchBar = CreateTextField(570,40,790,25, "Search for an ID");
+        final JTextField searchBar = CreateTextField(580,40,780,25, "Search for an ID");
         Font font = new Font("SansSerif", Font.PLAIN, 15);
         searchBar.setFont(font);
 
@@ -165,6 +165,11 @@ public class databaseGUI {
          JButton completeOrder = CreateButton(42,50,465,30, "Complete Order");
          JButton cancelOrder = CreateButton(42,620,465,30, "Cancel Order");
          JButton cancelRow = CreateButton(42,700,465,30, "Cancel Line");
+         JButton salesReport = CreateButton(42,740,100,30, "Sales");
+         JButton excessReport = CreateButton(152,740,100,30, "Excess");
+         JButton restockReport = CreateButton(262,740,100,30, "Restock");
+         JLabel reports = new JLabel("Generate Reports");
+         reports.setBounds(372,740,200,30);
 
 
          // Initializes text fields
@@ -176,7 +181,6 @@ public class databaseGUI {
              public void actionPerformed(ActionEvent e) {
                  Interact.cancelOrder(tableModel);
                  tableModel.setRowCount(0);
-                 customerOrderTotal.setText(" " + Interact.getCustomerOrderTotal() + " €");
              }
          });
 
@@ -222,6 +226,37 @@ public class databaseGUI {
              }
          });
 
+         // salesReport.addActionListener(new ActionListener() {
+         //     @Override
+         //     public void actionPerformed(ActionEvent e) {
+         //       JOptionPane option = new JOptionPane();
+         //         DefaultTableModel salesReportModel = new DefaultTableModel();
+         //         JTable salesReportTable = new JTable(salesReportModel);
+         //
+         //         String[] salesReportData = Interact.getSalesReport("2022-06-11", "2022-06-18");
+         //         for (int i = 0; i <  salesReportData.length; i++) {
+         //              salesReportModel.addRow(salesReportData);
+         //         }
+         //         option.add(new JScrollPane(salesReportTable));
+         //     }
+         // });
+         //
+         // excessReport.addActionListener(new ActionListener() {
+         //     @Override
+         //     public void actionPerformed(ActionEvent e) {
+         //         Interact.cancelOrder(tableModel);
+         //         tableModel.setRowCount(0);
+         //     }
+         // });
+         //
+         // restockReport.addActionListener(new ActionListener() {
+         //     @Override
+         //     public void actionPerformed(ActionEvent e) {
+         //         Interact.cancelOrder(tableModel);
+         //         tableModel.setRowCount(0);
+         //     }
+         // });
+
          //Create a border
          Border blackLine = BorderFactory.createLineBorder(Color.black);
 
@@ -246,6 +281,10 @@ public class databaseGUI {
          frame.add(customerOrderTotal);
          frame.add(IDToDelete);
          frame.add(cancelRow);
+         frame.add(salesReport);
+         frame.add(excessReport);
+         frame.add(restockReport);
+         frame.add(reports);
      }
 
     /**
@@ -318,7 +357,7 @@ public class databaseGUI {
         // Create different views and the buttons to switch those views
         JButton managerView = CreateButton(545, 660, 465, 105, "Switch to Manager View");
         JButton employeeView = CreateButton(1022, 660, 465, 105, "Switch to Employee View (Sales)");
-        JButton addItem = CreateButton(545,550, 50, 50, " + ");
+        JButton addItem = CreateButton(525, 35, 50, 50, "+");
 
         // Label that changes based on which permission view you are in
         JLabel viewLabel = new JLabel();
@@ -335,7 +374,7 @@ public class databaseGUI {
         Border blackLine = BorderFactory.createLineBorder(Color.black);
 
         // GUI field to store employee information
-        coverEmployee.setBounds(1022,90,472,450);
+        coverEmployee.setBounds(1022,90,472,440);
         coverEmployee.setBorder(blackLine);
         coverEmployee.setBackground(Color.white);
         coverEmployee.add(new JScrollPane(employees));
