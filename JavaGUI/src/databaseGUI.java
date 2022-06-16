@@ -226,36 +226,50 @@ public class databaseGUI {
              }
          });
 
-         // salesReport.addActionListener(new ActionListener() {
-         //     @Override
-         //     public void actionPerformed(ActionEvent e) {
-         //       JOptionPane option = new JOptionPane();
-         //         DefaultTableModel salesReportModel = new DefaultTableModel();
-         //         JTable salesReportTable = new JTable(salesReportModel);
-         //
-         //         String[] salesReportData = Interact.getSalesReport("2022-06-11", "2022-06-18");
-         //         for (int i = 0; i <  salesReportData.length; i++) {
-         //              salesReportModel.addRow(salesReportData);
-         //         }
-         //         option.add(new JScrollPane(salesReportTable));
-         //     }
-         // });
-         //
-         // excessReport.addActionListener(new ActionListener() {
-         //     @Override
-         //     public void actionPerformed(ActionEvent e) {
-         //         Interact.cancelOrder(tableModel);
-         //         tableModel.setRowCount(0);
-         //     }
-         // });
-         //
-         // restockReport.addActionListener(new ActionListener() {
-         //     @Override
-         //     public void actionPerformed(ActionEvent e) {
-         //         Interact.cancelOrder(tableModel);
-         //         tableModel.setRowCount(0);
-         //     }
-         // });
+         salesReport.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String[] salesReportData = Interact.getSalesReport("2022-06-11", "2022-06-12");
+                 DefaultTableModel salesReportModel = new DefaultTableModel();
+                 JTable salesReportTable = new JTable(salesReportModel);
+                 salesReportModel.addColumn("Item ID || Total Price");
+
+                 for (int i = 0; i <  salesReportData.length; i++) {
+                      salesReportModel.insertRow(0, new Object[] {salesReportData[i]});
+                 }
+                 JOptionPane.showMessageDialog(null, new JScrollPane(salesReportTable));
+             }
+         });
+
+         excessReport.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+               String[] excessReportData = Interact.getExcessReport("2022-06-11", "2022-06-12");
+               DefaultTableModel excessReportModel = new DefaultTableModel();
+               JTable excessReportTable = new JTable(excessReportModel);
+               excessReportModel.addColumn("Items sold less than 10%");
+
+               for (int i = 0; i <  excessReportData.length; i++) {
+                    excessReportModel.insertRow(0, new Object[] {excessReportData[i]});
+               }
+               JOptionPane.showMessageDialog(null, new JScrollPane(excessReportTable));
+             }
+         });
+
+         restockReport.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+               String[] restockReportData = Interact.getRestockReport("2022-06-11", "2022-06-12");
+               DefaultTableModel restockReportModel = new DefaultTableModel();
+               JTable restockReportTable = new JTable(restockReportModel);
+               restockReportModel.addColumn("Items sold more than in Inventory");
+
+               for (int i = 0; i <  restockReportData.length; i++) {
+                    restockReportModel.insertRow(0, new Object[] {restockReportData[i]});
+               }
+               JOptionPane.showMessageDialog(null, new JScrollPane(restockReportTable));
+             }
+         });
 
          //Create a border
          Border blackLine = BorderFactory.createLineBorder(Color.black);
@@ -432,12 +446,31 @@ public class databaseGUI {
             }
         });
 
-        // addItem.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //
-        //     }
-        // });
+        addItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              JOptionPane option = new JOptionPane();
+              DefaultTableModel addItemModel = new DefaultTableModel();
+              JTable addItemTable = new JTable(addItemModel);
+              addItemModel.addColumn("Item Name");
+              addItemModel.addColumn("Unit Price");
+              addItemModel.addColumn("Storage Type");
+              addItemModel.addColumn("Is Packaged (t/f)");
+              addItemModel.addRow(new Object[] {" "," "," "," "});
+
+              option.showMessageDialog(null, new JScrollPane(addItemTable));
+
+              String text = "Press to Add Food";
+              String title = "Confirm?";
+              int optionType = JOptionPane.OK_CANCEL_OPTION;
+              int resultOfOption = JOptionPane.showConfirmDialog(null, text, title, optionType);
+              if (resultOfOption == JOptionPane.OK_OPTION) {
+                  String[] itemData = {String.valueOf(addItemModel.getValueAt(0, 0)) , String.valueOf(addItemModel.getValueAt(0, 1)),
+                                       String.valueOf(addItemModel.getValueAt(0, 2)), String.valueOf(addItemModel.getValueAt(0, 3))};
+                  Interact.addFoodItem(itemData);
+              }
+            }
+        });
 
         // adds elements to frame
         frame.add(managerView);
