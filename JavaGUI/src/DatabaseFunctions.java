@@ -10,29 +10,6 @@ import java.util.*;
  * @author Kyle Owens
  */
 public class DatabaseFunctions {
-    /**
-     * This establishes a database connection
-     * @return conn Returns a connection to the database
-     */
-    public static Connection connectToDatabase() {
-        // Connect to the database
-        Connection conn = null;
-        String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315950_1db";
-        try {
-            conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
-            System.out.println("\nOpened database successfully");
-            return conn;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-
-        return null;
-    }
-
-
     public static int getNumberOfColumns(String tableName) {
       int numCols = 0;
       //Setting the number of columns based on the table in the database
@@ -86,10 +63,11 @@ public class DatabaseFunctions {
       return primaryKey;
     }
 
+
     public static int[] getMaxIDs() {
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
         int[] maxIDs = new int[6];
-        
+
         try {
             Statement stmt = conn.createStatement();
 
@@ -122,7 +100,7 @@ public class DatabaseFunctions {
             result.next();
             int vendorLineID = Integer.parseInt(result.getString(1));
             maxIDs[4] = vendorLineID;
-            
+
             sqlCommand = "SELECT MAX (saleLineID) FROM customerSaleLine;";
             result = stmt.executeQuery(sqlCommand);
             result.next();
@@ -147,7 +125,7 @@ public class DatabaseFunctions {
      */
     public static String[] getDataFromPK(String tableName, String id) {
         // Connect to the database
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
 
         try {
             // Send an SQL query to the database
@@ -181,7 +159,7 @@ public class DatabaseFunctions {
 
     public static String[][] getDataFromAttributes(String tableName, String[] attributeNames, String[] attributeValues) {
         // Connect to the database
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
 
         try {
             // Send an SQL query to the database
@@ -245,7 +223,7 @@ public class DatabaseFunctions {
      */
     public static void addData(String tableName, String attributes[]) {
         // Connect to the database
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
 
         try{
             // Create the SQL statement
@@ -278,7 +256,7 @@ public class DatabaseFunctions {
      */
     public static void editData(String tableName, String id, String attribute, String newData) {
         // Connect to the database
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
 
         try{
             // Create the SQL statement
@@ -308,7 +286,7 @@ public class DatabaseFunctions {
      */
     public static void deleteData(String tableName, String id) {
         // Connect to the database
-        Connection conn = connectToDatabase();
+        Connection conn = dbConnection.getConnection();
 
         try{
             // Create the SQL statement

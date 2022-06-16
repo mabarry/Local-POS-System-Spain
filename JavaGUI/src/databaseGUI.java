@@ -105,7 +105,7 @@ public class databaseGUI {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 searchInput[0] = searchBar.getText();
 
                 /* TODO: call database class' function to pull the value of searchInput[0] from table fooditems
@@ -128,7 +128,7 @@ public class databaseGUI {
                     priceType[0] = "/unit";
                 }
 
-                output.setText("\n" + "\n" + "\n" + "\n" + "\n" + itemReturned[1] +  " " + "\n" + "(" + itemReturned[2] + priceType[0] + ", " + 
+                output.setText("\n" + "\n" + "\n" + "\n" + "\n" + itemReturned[1] +  " " + "\n" + "(" + itemReturned[2] + priceType[0] + ", " +
                 itemReturned[3] + " " + quantityType[0] + " in Inventory)");
             }
         });
@@ -424,6 +424,7 @@ public class databaseGUI {
         return employees;
     }
 
+
     public static JTable ItemList(JFrame frame) {
         JTable items = new JTable(itemList);
         items.setBounds(1022,90,472,300);
@@ -444,6 +445,7 @@ public class databaseGUI {
      */
     public static void main(String[] args) {
         // Initialize the connection to the SQL database
+        dbConnection.setUpConnection();
         Interact.initializer("101");
 
         // Initialize a new Swing window to appear when run
