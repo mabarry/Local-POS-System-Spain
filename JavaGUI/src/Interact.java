@@ -95,10 +95,13 @@ public class Interact {
      * @param id The foodID number for the desired sale line to be deleted
      */
     public static void deleteSaleLine(String foodID) {
-        DatabaseFunctions.deleteData("CustomerSaleLine", foodID);
-
         // Get all the rows with the current CustomerOrderID and the foodID
+        String[][] matchingSaleLines = DatabaseFunctions.getDataFromAttributes("CustomerSaleLine", {"CustomerOrderID", "FoodID"}, {String.valueOf(IDTracker.getCustomerOrderID()), foodID})
+
         // DatabaseFunctions.getDataFromAttributes("CustomerOrder", )
+        for (String[] saleLine : matchingSaleLines) {
+            DatabaseFunctions.deleteData("CustomerSaleLine", saleLine[0]);
+        }
     }
 
     /**
