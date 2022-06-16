@@ -133,11 +133,19 @@ public class Interact {
         //
     }
 
-    /**
-     * Will query the database to display information about the shop that only the manager has permission to see
-     */
-    public static void switchToManager() {
-        //...
+    
+    public static String getStartIDFromDates(String startDate, String endDate) {
+        String[] attributeNames = {"customerOrderDate"};
+        String[] attributeValues = {startDate};
+        return DatabaseFunctions.getDataFromAttributes("CustomerOrder", attributeNames, attributeValues)[0][0];
+    }
+
+
+    public static String getEndIDFromDates(String startDate, String endDate) {
+        String[] attributeNames = {"customerOrderDate"};
+        String[] attributeValues = {lastDate};
+        String[][] ordersOnLastDay = DatabaseFunctions.getDataFromAttributes("CustomerOrder", attributeNames, attributeValues)
+        return ordersOnLastDay[ordersOnLastDay.length][0];
     }
 
     /**
