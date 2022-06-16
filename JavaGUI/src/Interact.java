@@ -134,16 +134,16 @@ public class Interact {
     }
 
     
-    public static String getStartIDFromDates(String startDate, String endDate) {
+    public static String getStartIDFromDates(String startDate) {
         String[] attributeNames = {"customerOrderDate"};
         String[] attributeValues = {startDate};
         return DatabaseFunctions.getDataFromAttributes("CustomerOrder", attributeNames, attributeValues)[0][0];
     }
 
 
-    public static String getEndIDFromDates(String startDate, String endDate) {
+    public static String getEndIDFromDates(String endDate) {
         String[] attributeNames = {"customerOrderDate"};
-        String[] attributeValues = {lastDate};
+        String[] attributeValues = {endDate};
         String[][] ordersOnLastDay = DatabaseFunctions.getDataFromAttributes("CustomerOrder", attributeNames, attributeValues)
         return ordersOnLastDay[ordersOnLastDay.length][0];
     }
