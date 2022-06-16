@@ -292,27 +292,7 @@ public class DatabaseFunctions {
             // Create the SQL statement
             Statement stmt = conn.createStatement();
 
-            String primaryKey = "";
-            switch (tableName) {
-                case "FoodItems":
-                    primaryKey = "foodID";
-                    break;
-                case "CustomerSaleLine":
-                    primaryKey = "saleLineID";
-                    break;
-                case "CustomerOrder":
-                    primaryKey = "customerOrderID";
-                    break;
-                case "EmployeeList":
-                    primaryKey = "employeeID";
-                    break;
-                case "VendorOrder":
-                    primaryKey = "vendorOrderID";
-                    break;
-                case "VendorBuyLine":
-                    primaryKey = "vendorLineID";
-                    break;
-            }
+            String primaryKey = getPrimaryKey();
 
             String sqlCommand = "DELETE FROM " + tableName + " WHERE " + primaryKey + "=" + id + ";";
 
