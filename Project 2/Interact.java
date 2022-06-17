@@ -166,38 +166,54 @@
        * @return Returns a String array of all the info of the newly added buy line
        */
       public static String[] addToBuyLine(String foodID, String customerQuantity) {
-          //System.out.println("\n\n\n\nCUSTOMER QUANTITY = " + customerQuantity);
+          try {
+              //System.out.println("\n\n\n\nCUSTOMER QUANTITY = " + customerQuantity);
 
-          // Fetch data about the given food item
-          String[] foodData = DatabaseFunctions.getDataFromPK("FoodItems", foodID);
-          double inventoryQuantity = Double.parseDouble(foodData[3]);
-          double unitPrice = Double.parseDouble(foodData[2]);
+              // Fetch data about the given food item
+              String[] foodData = DatabaseFunctions.getDataFromPK("FoodItems", foodID);
+              double inventoryQuantity = Double.parseDouble(foodData[3]);
+              double unitPrice = Double.parseDouble(foodData[2]);
 
-          // Assuming there is a customer order already created,
-          // Subtract quantity from inventory
-          double newQuantity = inventoryQuantity + Double.parseDouble(customerQuantity);
-          newQuantity = ( (double) ((int)(newQuantity * 100) ) ) / 100;
-          DatabaseFunctions.editData("FoodItems", foodID, "foodQuantity", String.valueOf(newQuantity));
+              // Assuming there is a customer order already created,
+              // Subtract quantity from inventory
+              double newQuantity = inventoryQuantity + Double.parseDouble(customerQuantity);
+              newQuantity = ( (double) ((int)(newQuantity * 100) ) ) / 100;
+              DatabaseFunctions.editData("FoodItems", foodID, "foodQuantity", String.valueOf(newQuantity));
 
-          // Create a new buy line and add it to the database
-          IDTracker.incBuyLineID();
-          double buyLinePrice = Double.parseDouble(customerQuantity) * unitPrice;
-          buyLinePrice = ( (double) ((int)(buyLinePrice * 100) ) ) / 100;
-          String[] buyLineData = {String.valueOf(IDTracker.getBuyLineID()), String.valueOf(IDTracker.getVendorOrderID()), foodID, String.valueOf(buyLinePrice), customerQuantity};
-          DatabaseFunctions.addData("VendorBuyLine", buyLineData);
+              // Create a new buy line and add it to the database
+              IDTracker.incBuyLineID();
+              double buyLinePrice = Double.parseDouble(customerQuantity) * unitPrice;
+              buyLinePrice = ( (double) ((int)(buyLinePrice * 100) ) ) / 100;
+              String[] buyLineData = {String.valueOf(IDTracker.getBuyLineID()), String.valueOf(IDTracker.getVendorOrderID()), foodID, String.valueOf(buyLinePrice), customerQuantity};
+              DatabaseFunctions.addData("VendorBuyLine", buyLineData);
 
-          // Update the total price of the VendorOrder
-          String[] orderData = DatabaseFunctions.getDataFromPK("VendorOrder", String.valueOf(IDTracker.getVendorOrderID()));
-          double newOrderTotal = Double.parseDouble(orderData[3]) + buyLinePrice;
-          newOrderTotal = ( (double) ((int)(newOrderTotal * 100) ) ) / 100;
-          DatabaseFunctions.editData("VendorOrder", String.valueOf(IDTracker.getVendorOrderID()), "vendorOrderTotal", String.valueOf(newOrderTotal));
+              // Update the total price of the VendorOrder
+              String[] orderData = DatabaseFunctions.getDataFromPK("VendorOrder", String.valueOf(IDTracker.getVendorOrderID()));
+              double newOrderTotal = Double.parseDouble(orderData[3]) + buyLinePrice;
+              newOrderTotal = ( (double) ((int)(newOrderTotal * 100) ) ) / 100;
+              DatabaseFunctions.editData("VendorOrder", String.valueOf(IDTracker.getVendorOrderID()), "vendorOrderTotal", String.valueOf(newOrderTotal));
 
-          //System.out.println("OLD TOTAL = " + Double.parseDouble(orderData[3]));
-          //System.out.println("BUY LINE TOTAL = " + buyLinePrice);
-          //System.out.println("NEW TOTAL = " + newOrderTotal);
+              //System.out.println("OLD TOTAL = " + Double.parseDouble(orderData[3]));
+              //System.out.println("BUY LINE TOTAL = " + buyLinePrice);
+              //System.out.println("NEW TOTAL = " + newOrderTotal);
 
-          // Return the buy line info to the front-end
-          return buyLineData;
+              // Return the buy line info to the front-end
+              return buyLineData;
+          }
+          catch (Exception e) {
+              IDTracker.incSaleLineID();
+              IDTracker.incBuyLineID();
+              IDTracker.incCustomerOrderID();
+              IDTracker.incVendorOrderID();
+              IDTracker.incSaleLineID();
+              IDTracker.incBuyLineID();
+              IDTracker.incCustomerOrderID();
+              IDTracker.incVendorOrderID();
+
+              addToBuyLine(foodID, customerQuantity);
+
+          }
+          return null;
       }
 
       /**
