@@ -314,7 +314,6 @@ public class DatabaseFunctions {
                 sqlCommand = sqlCommand + attributes[i] + "\', \'";
             }
             sqlCommand = sqlCommand + attributes[attributes.length - 1] + "\');";
-            //System.out.println(sqlCommand);
 
             // Send SQL statement to database
             int result = stmt.executeUpdate(sqlCommand);
@@ -322,7 +321,7 @@ public class DatabaseFunctions {
         catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            //System.exit(0);
         }
     }
 
