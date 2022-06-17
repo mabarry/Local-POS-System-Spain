@@ -148,10 +148,6 @@
               IDTracker.incBuyLineID();
               IDTracker.incCustomerOrderID();
               IDTracker.incVendorOrderID();
-              IDTracker.incSaleLineID();
-              IDTracker.incBuyLineID();
-              IDTracker.incCustomerOrderID();
-              IDTracker.incVendorOrderID();
 
               addToSaleLine(foodID, customerQuantity);
 
@@ -201,10 +197,6 @@
               return buyLineData;
           }
           catch (Exception e) {
-              IDTracker.incSaleLineID();
-              IDTracker.incBuyLineID();
-              IDTracker.incCustomerOrderID();
-              IDTracker.incVendorOrderID();
               IDTracker.incSaleLineID();
               IDTracker.incBuyLineID();
               IDTracker.incCustomerOrderID();
