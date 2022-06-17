@@ -238,54 +238,116 @@ public class databaseGUI {
          salesReport.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 String[] salesReportData = Interact.getSalesReport("2022-06-11", "2022-06-12");
-                 DefaultTableModel salesReportModel = new DefaultTableModel();
-                 JTable salesReportTable = new JTable(salesReportModel);
-                 salesReportModel.addColumn("Item ID || Total Price");
+                 String startDate = " ";
+                 String endDate = " ";
+                 JOptionPane option = new JOptionPane();
+                 DefaultTableModel dateModel = new DefaultTableModel();
+                 JTable dateTable = new JTable(dateModel);
+                 dateModel.addColumn("Start Date (yyyy-mm-dd)");
+                 dateModel.addColumn("End Date (yyyy-mm-dd)");
+                 dateModel.addRow(new Object[] {" "," "});
 
-                 for (int i = (salesReportData.length - 1); i >= 0; i--) {
-                     if (Double.parseDouble(salesReportData[i]) < 0.01) {
-                         continue;
+                 option.showMessageDialog(null, new JScrollPane(dateTable));
+
+                 String text = "Press to Confirm Dates";
+                 String title = "Confirm?";
+                 int optionType = JOptionPane.OK_CANCEL_OPTION;
+                 int resultOfOption = JOptionPane.showConfirmDialog(null, text, title, optionType);
+                 if (resultOfOption == JOptionPane.OK_OPTION) {
+                     String[] dateData = { String.valueOf(dateModel.getValueAt(0, 0)) , String.valueOf(dateModel.getValueAt(0, 1))};
+                     startDate = dateData[0];
+                     endDate = dateData[1];
+                     String[] excessReportData = Interact.getSalesReport(startDate, endDate);
+                     DefaultTableModel excessReportModel = new DefaultTableModel();
+                     JTable excessReportTable = new JTable(excessReportModel);
+                     excessReportModel.addColumn("Items sold less than 10%");
+
+                     for (int i = excessReportData.length - 1; i >= 0; i--) {
+                         if (excessReportData[i] == "empty" && i > 0) {
+                             continue;
+                         }
+                         excessReportModel.insertRow(0, new Object[] {excessReportData[i]});
                      }
-                      salesReportModel.insertRow(0, new Object[] { (i+1) + ": " + salesReportData[i] });
+                     JOptionPane.showMessageDialog(null, new JScrollPane(excessReportTable));
                  }
-                 JOptionPane.showMessageDialog(null, new JScrollPane(salesReportTable));
              }
          });
 
          excessReport.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-               String[] excessReportData = Interact.getExcessReport("2022-06-11", "2022-06-12");
-               DefaultTableModel excessReportModel = new DefaultTableModel();
-               JTable excessReportTable = new JTable(excessReportModel);
-               excessReportModel.addColumn("Items sold less than 10%");
 
-               for (int i = excessReportData.length - 1; i >= 0; i--) {
-                   if (excessReportData[i] == "empty" && i > 0) {
-                       continue;
-                   }
-                    excessReportModel.insertRow(0, new Object[] {excessReportData[i]});
-               }
-               JOptionPane.showMessageDialog(null, new JScrollPane(excessReportTable));
+               String startDate = " ";
+               String endDate = " ";
+               JOptionPane option = new JOptionPane();
+                  DefaultTableModel dateModel = new DefaultTableModel();
+                  JTable dateTable = new JTable(dateModel);
+                  dateModel.addColumn("Start Date (yyyy-mm-dd)");
+                  dateModel.addColumn("End Date (yyyy-mm-dd)");
+                  dateModel.addRow(new Object[] {" "," "});
+
+                  option.showMessageDialog(null, new JScrollPane(dateTable));
+
+                  String text = "Press to Confirm Dates";
+                  String title = "Confirm?";
+                  int optionType = JOptionPane.OK_CANCEL_OPTION;
+                  int resultOfOption = JOptionPane.showConfirmDialog(null, text, title, optionType);
+                  if (resultOfOption == JOptionPane.OK_OPTION) {
+                      String[] dateData = { String.valueOf(dateModel.getValueAt(0, 0)) , String.valueOf(dateModel.getValueAt(0, 1))};
+                      startDate = dateData[0];
+                      endDate = dateData[1];
+                      String[] excessReportData = Interact.getExcessReport(startDate, endDate);
+                      DefaultTableModel excessReportModel = new DefaultTableModel();
+                      JTable excessReportTable = new JTable(excessReportModel);
+                      excessReportModel.addColumn("Items sold less than 10%");
+
+                      for (int i = excessReportData.length - 1; i >= 0; i--) {
+                          if (excessReportData[i] == "empty" && i > 0) {
+                              continue;
+                          }
+                          excessReportModel.insertRow(0, new Object[] {excessReportData[i]});
+                      }
+                      JOptionPane.showMessageDialog(null, new JScrollPane(excessReportTable));
+                  }
              }
          });
 
          restockReport.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-               String[] restockReportData = Interact.getRestockReport("2022-06-11", "2022-06-12");
-               DefaultTableModel restockReportModel = new DefaultTableModel();
-               JTable restockReportTable = new JTable(restockReportModel);
-               restockReportModel.addColumn("Items sold more than in Inventory");
 
-               for (int i = 0; i <  restockReportData.length; i++) {
-                   if (restockReportData[i] == "empty" && i > 0) {
-                       continue;
-                   }
-                    restockReportModel.insertRow(0, new Object[] {restockReportData[i]});
-               }
-               JOptionPane.showMessageDialog(null, new JScrollPane(restockReportTable));
+                 String startDate = " ";
+                 String endDate = " ";
+                 JOptionPane option = new JOptionPane();
+                 DefaultTableModel dateModel = new DefaultTableModel();
+                 JTable dateTable = new JTable(dateModel);
+                 dateModel.addColumn("Start Date (yyyy-mm-dd)");
+                 dateModel.addColumn("End Date (yyyy-mm-dd)");
+                 dateModel.addRow(new Object[] {" "," "});
+
+                 option.showMessageDialog(null, new JScrollPane(dateTable));
+
+                 String text = "Press to Confirm Dates";
+                 String title = "Confirm?";
+                 int optionType = JOptionPane.OK_CANCEL_OPTION;
+                 int resultOfOption = JOptionPane.showConfirmDialog(null, text, title, optionType);
+                 if (resultOfOption == JOptionPane.OK_OPTION) {
+                     String[] dateData = { String.valueOf(dateModel.getValueAt(0, 0)) , String.valueOf(dateModel.getValueAt(0, 1))};
+                     startDate = dateData[0];
+                     endDate = dateData[1];
+                     String[] excessReportData = Interact.getRestockReport(startDate, endDate);
+                     DefaultTableModel excessReportModel = new DefaultTableModel();
+                     JTable excessReportTable = new JTable(excessReportModel);
+                     excessReportModel.addColumn("Items sold less than 10%");
+
+                     for (int i = excessReportData.length - 1; i >= 0; i--) {
+                         if (excessReportData[i] == "empty" && i > 0) {
+                             continue;
+                         }
+                         excessReportModel.insertRow(0, new Object[] {excessReportData[i]});
+                     }
+                     JOptionPane.showMessageDialog(null, new JScrollPane(excessReportTable));
+                 }
              }
          });
 
